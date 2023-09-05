@@ -15,7 +15,7 @@ class SketchPad{
         this.ctx = this.canvas.getContext('2d');
 
         //to store path
-        this.path = [];
+        this.paths = [];
         this.isDrawing = false;
 
         //#-private method; to draw
@@ -25,7 +25,8 @@ class SketchPad{
     #addEventListeners(){
         this.canvas.onmousedown = (e)=>{
            const mouse = this.#getMousePosition(e);
-            this.path = [mouse];
+           //store each mouse pos in the array - [[x1,y1],[x2,y2]...]
+            this.paths.push([mouse]);
         this.isDrawing = true;
         }
 
@@ -33,8 +34,10 @@ class SketchPad{
             if(this.isDrawing){
               
                 const mouse = this.#getMousePosition(e);
+                //for multiple paths, we want to push to the last path
+                const lastPath = this.paths[this.paths.length-1];
 
-                this.path.push(mouse);
+                lastPath.push(mouse);
                this.#reDraw();
             }
         }
@@ -46,7 +49,7 @@ class SketchPad{
 
     #reDraw(){
         this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
-        draw.path(this.ctx,this.path);
+        draw.paths(this.ctx,this.paths);
     }
 
     #getMousePosition(e){
