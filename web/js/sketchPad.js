@@ -34,7 +34,7 @@ class SketchPad{
             if(this.isDrawing){
               
                 const mouse = this.#getMousePosition(e);
-                //for multiple paths, we want to push to the last path
+                //for multiple paths, we want to push to the last path(i draw something and letgo. then again i draw from somewhere. both paths start at different places.)
                 const lastPath = this.paths[this.paths.length-1];
 
                 lastPath.push(mouse);
@@ -45,6 +45,19 @@ class SketchPad{
         this.canvas.onmouseup=()=>{
             this.isDrawing = false;
         }
+
+        this.canvas.ontouchstart=(e)=>{
+            //on mobile screens,mouse events dont work, use the first touch and pass that event(loc) to the mousedown function to do same task of drawing
+            const loc=e.touches[0];
+            this.canvas.onmousedown(loc);
+        }
+
+        this.canvas.ontouchmove=(e)=>{
+            const loc=e.touches[0];
+            this.canvas.onmousemove(loc); 
+        }
+
+        this.canvas.ontouchend=(e)=> this.canvas.onmouseup();
     }
 
     #reDraw(){

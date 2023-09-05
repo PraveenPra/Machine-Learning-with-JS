@@ -18,7 +18,6 @@ main{
 }
 #content{
     background-color: #fff; 
-    padding: 50px;
     width:50rem;
     display: flex;
     flex-direction:column;
