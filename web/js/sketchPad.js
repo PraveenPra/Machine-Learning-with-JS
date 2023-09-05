@@ -14,8 +14,8 @@ class SketchPad{
 
         this.ctx = this.canvas.getContext('2d');
 
-        //to store paths
-        this.paths = [];
+        //to store path
+        this.path = [];
         this.isDrawing = false;
 
         //#-private method; to draw
@@ -24,32 +24,37 @@ class SketchPad{
 
     #addEventListeners(){
         this.canvas.onmousedown = (e)=>{
-           const mouse = getMousePosition(e);
-            this.paths = [mouse];
+           const mouse = this.#getMousePosition(e);
+            this.path = [mouse];
         this.isDrawing = true;
         }
 
         this.canvas.onmousemove=(e)=>{
             if(this.isDrawing){
               
-                const mouse =  const mouse = getMousePosition(e);
+                const mouse = this.#getMousePosition(e);
 
-                this.paths.push(mouse);
-                console.log(this.paths.length)
+                this.path.push(mouse);
+               this.#reDraw();
             }
         }
 
         this.canvas.onmouseup=()=>{
             this.isDrawing = false;
         }
+    }
 
-        #getMousePosition(e){
-            const rect = this.canvas.getBoundingClientRect();
+    #reDraw(){
+        this.ctx.clearRect(0,0,this.canvas.width,this.canvas.height);
+        draw.path(this.ctx,this.path);
+    }
 
-            return [
-                Math.round(e.clientX - rect.left),
-                Math.round(e.clientY - rect.top)
-            ];
-        }
+    #getMousePosition(e){
+        const rect = this.canvas.getBoundingClientRect();
+
+        return [
+            Math.round(e.clientX - rect.left),
+            Math.round(e.clientY - rect.top)
+        ];
     }
 }
