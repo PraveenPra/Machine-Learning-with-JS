@@ -33,3 +33,17 @@ h1{
     text-align:center;
     padding:10px;
 }
+
+button{
+    padding:8px 16px;
+    cursor:pointer;
+    border:none;
+    color:#fff;
+    background:navy;
+    border-radius:8px;
+}
+
+button:disabled,button:disabled:hover{
+    background:gray;
+    cursor:default;
+}

@@ -24,6 +24,8 @@ class SketchPad {
         this.paths = [];
         this.isDrawing = false;
 
+        //this will reset undo button at start
+        this.#reDraw();
         //#-private method; to draw
         this.#addEventListeners();
     }
@@ -65,7 +67,7 @@ class SketchPad {
 
         this.canvas.ontouchend = (e) => this.canvas.onmouseup();
 
-        this.undoBtn.onclick=()=>{
+        this.undoBtn.onclick = () => {
             this.paths.pop();
             this.#reDraw();
         }
@@ -74,6 +76,12 @@ class SketchPad {
     #reDraw() {
         this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
         draw.paths(this.ctx, this.paths);
+
+        if (this.paths.length > 0)
+            this.undoBtn.disabled = false;
+        else
+            this.undoBtn.disabled = true;
+
     }
 
     #getMousePosition(e) {
