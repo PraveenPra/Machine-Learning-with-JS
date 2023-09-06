@@ -1,27 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, maximum-scale=0.9, user-scalable=0">
     <title>Data creator</title>
-    <link rel="stylesheet" href="styles.css"/>
+    <link rel="stylesheet" href="styles.css" />
 </head>
+
 <body>
     <main>
         <div id="content">
             <h1 class="center">Data creator</h1>
-           <div>
-            <input type="text" id="student" placeholder="Type your name"/>
+            <div>
+                <input type="text" id="student" placeholder="Type your name" />
 
-            <button id="advanceBtn" onclick="start();">Start</button>
-           </div>
+                <button id="advanceBtn" onclick="start();">Start</button>
+            </div>
             <div id="sketchPadContainer" style="visibility: hidden;"></div>
-        </div> 
-    </main >
+        </div>
+    </main>
     <script src="js/draw.js"></script>
-   <script src="js/sketchPad.js"></script>
-   <script>
-    const sketchPad = new SketchPad(sketchPadContainer);
-   </script>
+    <script src="js/sketchPad.js"></script>
+    <script>
+
+        const data = {
+            student: null,
+            session: new Date().getTime(),
+            drawings: {}
+        };
+
+        const sketchPad = new SketchPad(sketchPadContainer);
+
+        function start() {
+            if (student.value == "") {
+                alert("Please enter your name");
+                return;
+            }
+
+            data.student = student.value;
+            student.style.display = 'none';
+            sketchPadContainer.style.visibility = 'visible';
+        }
+    </script>
 </body>
+
 </html>
