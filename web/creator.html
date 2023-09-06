@@ -15,6 +15,9 @@
             <div>
                 <input type="text" id="student" placeholder="Type your name" />
 
+                <br/>
+
+                <p id="instructions">ins</p>
                 <button id="advanceBtn" onclick="start();">Start</button>
             </div>
             <div id="sketchPadContainer" style="visibility: hidden;"></div>
@@ -23,6 +26,9 @@
     <script src="js/draw.js"></script>
     <script src="js/sketchPad.js"></script>
     <script>
+        let index = 0;
+        const labels = ['fish','bicycle',
+    'car',"house",'tree','guitar','pencil','clock'];
 
         const data = {
             student: null,
@@ -41,6 +47,31 @@
             data.student = student.value;
             student.style.display = 'none';
             sketchPadContainer.style.visibility = 'visible';
+
+            const label = labels[index];
+            instructions.innerHTML = "Draw a "+label;
+
+            advanceBtn.innerHTML = 'Next';
+
+            advanceBtn.onclick = next;
+        }
+
+        function next(){
+            if(sketchPad.paths.length == 0){
+            alert('Draw something first');
+        return;
+        }
+
+        //save the drawings - paths of the curent label(fish .. )
+        const label = labels[index];
+        data.drawings[label]=sketchPad.paths;
+        sketchPad.reset();
+
+        //
+            index++;
+            const nextLabel = labels[index];
+            instructions.innerHTML = "Please draw a "+nextLabel;
+
         }
     </script>
 </body>

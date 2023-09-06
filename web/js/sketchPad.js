@@ -20,14 +20,18 @@ class SketchPad {
 
         this.ctx = this.canvas.getContext('2d');
 
+        this.reset();
+        //#-private method; to draw
+        this.#addEventListeners();
+    }
+
+    reset() {
         //to store path
         this.paths = [];
         this.isDrawing = false;
 
         //this will reset undo button at start
         this.#reDraw();
-        //#-private method; to draw
-        this.#addEventListeners();
     }
 
     #addEventListeners() {
