@@ -21,3 +21,8 @@ for(const path of paths){
     draw.path(ctx,path,color);
 }
 }
+
+//do this to run it only for node not web
+if(typeof module !== undefined){
+    module.exports = draw //for node folder to access this
+}

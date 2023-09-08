@@ -1,3 +1,10 @@
+const draw = require('../common/draw')
+
+//canvasis a web element not available here, so install canvas pkg
+const {createCanvas} = require('canvas');
+const canvas = createCanvas(400,400)
+const ctx = canvas.getContext('2d')
+
 const constants = {};
 
 constants.DATA_DIR = '../data';
@@ -29,14 +36,29 @@ fileNames.forEach(fn=>{
             student_id : session
         })
 
+        const paths = drawings[label];
+
         //this creates json file for each id containing the paths data only
         fs.writeFileSync(
             constants.JSON_DIR+'/'+id+'.json',//filename (1.json,2.json...)
-            JSON.stringify(drawings[label])//paths data
+            JSON.stringify(paths)//paths data
         )
  
+        //create the drawing images from the paths for each id
+        generateImageFile(
+            constants.IMG_DIR+'/'+id+'.png',
+            paths
+        )
         id++;
     }
 })
 
 fs.writeFileSync(constants.SAMPLES,JSON.stringify(samples));
+
+function generateImageFile(outFile,paths){
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    draw.paths(ctx,paths);
+
+    const buffer = canvas.toBuffer('image/png');
+    fs.writeFileSync(outFile,buffer);
+}
