@@ -28,6 +28,13 @@ fileNames.forEach(fn=>{
             student_name : student,
             student_id : session
         })
+
+        //this creates json file for each id containing the paths data only
+        fs.writeFileSync(
+            constants.JSON_DIR+'/'+id+'.json',//filename (1.json,2.json...)
+            JSON.stringify(drawings[label])//paths data
+        )
+ 
         id++;
     }
 })
