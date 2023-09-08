@@ -15,7 +15,7 @@
             <div>
                 <input type="text" id="student" placeholder="Type your name" />
 
-                <br/>
+                <br />
 
                 <p id="instructions">ins</p>
                 <button id="advanceBtn" onclick="start();">Start</button>
@@ -27,8 +27,8 @@
     <script src="js/sketchPad.js"></script>
     <script>
         let index = 0;
-        const labels = ['fish','bicycle',
-    'car',"house",'tree','guitar','pencil','clock'];
+        const labels = ['fish', 'bicycle',
+            'car', "house", 'tree', 'guitar', 'pencil', 'clock'];
 
         const data = {
             student: null,
@@ -49,29 +49,64 @@
             sketchPadContainer.style.visibility = 'visible';
 
             const label = labels[index];
-            instructions.innerHTML = "Draw a "+label;
+            instructions.innerHTML = "Draw a " + label;
 
             advanceBtn.innerHTML = 'Next';
 
             advanceBtn.onclick = next;
         }
 
-        function next(){
-            if(sketchPad.paths.length == 0){
-            alert('Draw something first');
-        return;
+        function next() {
+            if (sketchPad.paths.length == 0) {
+                alert('Draw something first');
+                return;
+            }
+
+            //save the drawings - paths of the curent label(fish .. )
+            const label = labels[index];
+            data.drawings[label] = sketchPad.paths;
+            sketchPad.reset();
+
+            //go to next drawing
+            index++;
+            if (index < labels.length) {
+                const nextLabel = labels[index];
+                instructions.innerHTML = "Please draw a " + nextLabel;
+            }
+            else {
+                instructions.innerHTML = "Thankyou";
+                sketchPadContainer.style.visibility = 'hidden';
+                advanceBtn.innerHTML = 'SAVE';
+                advanceBtn.onclick = save;
+
+            }
         }
 
-        //save the drawings - paths of the curent label(fish .. )
-        const label = labels[index];
-        data.drawings[label]=sketchPad.paths;
-        sketchPad.reset();
+        function save() {
+            advanceBtn.style.display = 'none';
+            instructions.innerHTML = 'Keep this downloaded file with others in the dataset';
 
-        //
-            index++;
-            const nextLabel = labels[index];
-            instructions.innerHTML = "Please draw a "+nextLabel;
+            // Create a Blob with the JSON data
+            const jsonBlob = new Blob([JSON.stringify(data)], { type: 'application/json' });
 
+            // Create a temporary URL for the Blob
+            const blobUrl = URL.createObjectURL(jsonBlob);
+
+            const element = document.createElement('a');
+            element.setAttribute('href', blobUrl);
+
+            const fileName = data.session + ".json";
+            element.setAttribute('download', fileName);
+
+            // Trigger the download
+            element.style.display = 'none';
+            document.body.appendChild(element);
+            element.click();
+
+            // Clean up the temporary URL
+            URL.revokeObjectURL(blobUrl);
+
+            document.body.removeChild(element);
         }
     </script>
 </body>
